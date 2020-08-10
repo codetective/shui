@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Shopper</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+  <!-- Loader -->
+  <div class="loader">
+    <div class="group">
+      <div class="bigSqr">
+        <div class="square first"></div>
+        <div class="square second"></div>
+        <div class="square third"></div>
+        <div class="square fourth"></div>
+      </div>
+      <div class="text">loading</div>
+    </div>
+  </div>
+  <div class="toastbox"></div>
+
+  <main>
+    <div class="container">
+      <header class="text-center text-success display-5 card shadow-sm py-2">
+        <img src="./css/shopper.svg" class="d-block m-auto" alt="" width="200px">
+      </header>
+
+      <section class="mt-4">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <h4 class="font-weight-light">Available Stock:</h4>
+            <div class="available-stock"></div>
+          </div>
+        </div>
+      </section>
+      <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="sale-tab" data-toggle="tab" href="#sale" role="tab" aria-controls="sale"
+            aria-selected="true">
+            Sale
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" id="update-tab" data-toggle="tab" href="#updateStock" role="tab" aria-controls="update"
+            aria-selected="false">
+            Update
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="addStock-tab" data-toggle="tab" href="#addStock" role="tab" aria-controls="addStock"
+            aria-selected="false">
+            Add
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade" id="addStock" role="tabpanel" aria-labelledby="addStock-tab">
+          <div class="container">
+            <h5 class="text-center mt-2">Add new stock</h5>
+
+            <form id="addStockForm" autocomplete="off" class="addStockForm my-3">
+              <div class="form-group">
+                <label for="name">Name(stock):</label>
+                <input type="text" class="form-control" placeholder="Enter name" id="name" name='name' required />
+              </div>
+              <div class="form-group">
+                <label for="qty">Quantity:</label>
+                <input type="number" class="form-control" placeholder="Enter quantity" id="qty" name="qty" required />
+              </div>
+              <button type="submit" class="btn btn-primary py-0 mt-2">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="updateStock" role="tabpanel" aria-labelledby="update-tab">
+          <div class="container">
+            <h5 class="text-center mt-2">Update stock amount</h5>
+            <form id="updateStockForm" autocomplete="off" class="updateStockForm my-3">
+              <div class="form-group">
+                <label for="name">Name(stock):</label>
+                <input type="text" class="form-control" placeholder="Enter Stock" name='name' required />
+              </div>
+              <div class="form-group">
+                <label for="qty">Quantity:</label>
+                <input type="number" class="form-control" placeholder="Enter new qty" name="qty" required />
+              </div>
+              <button type="submit" class="btn btn-primary py-0 mt-2">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="tab-pane fade show active" id="sale" role="tabpanel" aria-labelledby="sale-tab">
+          <div class="container">
+            <ul id="cart"></ul>
+            <button id="reg-sale-btn" class="btn-success shadow-light btn">Register Sale</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <script src="./js/script.js"></script>
+  <script src="./bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Shopper</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/app.css" />
+  </head>
+
+  <body class="bg-light">
+    <nav class="py-2">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="navbar-brand">
+            <img src="./css/shopper.svg" alt="logo" height="30"/>
+          </div>
+          <div id="cart-toggle">
+            <div id="cart-sum">0</div>
+            <img src="./css/list-check.svg" alt="toggle cart button" height="35"/>
+          </div>
+        </div>
+      </div>
+      <div class="cart-wrapper">
+        <div class="cart-overlay"></div>
+        <div class="cart" class="bg-white"></div>
+      </div>
+    </nav>
+
+    <section id="available-stock" style="width: 85%;max-width: 600px; margin: auto;">
+      <div class="container my-3">
+        <p class="h4">Stock available:</p>
+        <div id="stockbox">
+          <div data-stock="name 1" class="stock">
+            <div data-stockName="">Name</div>
+            <div>
+              <span data-qty="99">99</span>
+              <button><img src="./css/trash-fill.svg" alt=""></button>
+            </div>
+          </div>
+        </div>
+    </section>
+<!-- <div class="spinner-border spinner-border-md" role="status">
+  <span class="sr-only">Loading...</span>
+</div> -->
+<section id="accordion-wrapper" class="d-flex justify-content-center">
+  <section class="accordion">
+    <section class="accordion-tabs">
+      <button class="accordion-tab accordion-active" data-actab-group="0" data-actab-id="0">Update</button>
+      <button class="accordion-tab" data-actab-group="0" data-actab-id="1">Add New</button>
+     
+    </section>
+    <section class="accordion-content">
+      <article class="accordion-item accordion-active" data-actab-group="0" data-actab-id="0">
+        <h4 class="accordion-item__label">Update</h4>
+        <div class="accordion-item__container">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, deserunt minima? Ut facere minus, ipsa dolore animi quis alias eos, porro corporis quod esse quidem. Maxime a aperiam perspiciatis architecto?</p>
+        </div>
+      </article>
+      <article class="accordion-item" data-actab-group="0" data-actab-id="1">
+        <h4 class="accordion-item__label">Add New</h4>
+        <div class="accordion-item__container">
+          <p>reprehenderit temporibus, assumenda cupiditate consequatur soluta odit ex repudiandae delectus cumque, provident hic sed quod? Quis, nam. Similique eaque quae vel recusandae expedita qui sint fugiat, nisi assumenda et ex molestiae atque deleniti magni, ipsam libero!</p>
+        </div>
+      </article>
+
+    </section>
+  </section></section>
+
+
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>
