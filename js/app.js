@@ -110,7 +110,7 @@ let app = () => {
   FetchStock()
 
   const DeleteStock = async stockname => {
-    spinner.style.display = 'block'
+    spinner.style.display = 'flex'
     cartArray = ['']
     cartItems.innerHTML = ''
     mapCartSum()
