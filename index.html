@@ -1,73 +1,148 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Shopper</title>
-    <link rel="stylesheet" href="./css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./css/app.css" />
-  </head>
 
-  <body class="bg-light">
-    <nav class="py-2">
-      <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="navbar-brand">
-            <img src="./css/shopper.svg" alt="logo" height="30"/>
-          </div>
-          <div id="cart-toggle">
-            <div id="cart-sum">0</div>
-            <img src="./css/list-check.svg" alt="toggle cart button" height="35"/>
-          </div>
-        </div>
-      </div>
-      <div class="cart-wrapper">
-        <div class="cart-overlay"></div>
-        <div class="cart" class="bg-white"></div>
-      </div>
-    </nav>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <meta charset="utf-8" />
+  <title>Shopper</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./css/app.css" />
+</head>
 
-    <section id="available-stock" style="width: 85%;max-width: 600px; margin: auto;">
-      <div class="container my-3">
-        <p class="h4">Stock available:</p>
-        <div id="stockbox">
-          <div data-stock="name 1" class="stock">
-            <div data-stockName="">Name</div>
-            <div>
-              <span data-qty="99">99</span>
-              <button><img src="./css/trash-fill.svg" alt=""></button>
-            </div>
-          </div>
-        </div>
-    </section>
-<!-- <div class="spinner-border spinner-border-md" role="status">
+<body class="bg-light">
+     <!-- Loader -->
+  <div class="loader">
+    <div class="group">
+      <div class="bigSqr">
+        <div class="square first"></div>
+        <div class="square second"></div>
+        <div class="square third"></div>
+        <div class="square fourth"></div>
+      </div>
+      <div class="text">loading</div>
+    </div>
+  </div>
+  <div class="toastbox"></div>
+  <div id="spinner-wrapper">
+    <div id="spinner" class="spinner-border spinner-border-md" role="status">
   <span class="sr-only">Loading...</span>
-</div> -->
-<section id="accordion-wrapper" class="d-flex justify-content-center">
-  <section class="accordion">
-    <section class="accordion-tabs">
-      <button class="accordion-tab accordion-active" data-actab-group="0" data-actab-id="0">Update</button>
-      <button class="accordion-tab" data-actab-group="0" data-actab-id="1">Add New</button>
-     
-    </section>
-    <section class="accordion-content">
-      <article class="accordion-item accordion-active" data-actab-group="0" data-actab-id="0">
-        <h4 class="accordion-item__label">Update</h4>
-        <div class="accordion-item__container">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, deserunt minima? Ut facere minus, ipsa dolore animi quis alias eos, porro corporis quod esse quidem. Maxime a aperiam perspiciatis architecto?</p>
+</div>
+  </div>
+  <!-- loader -->
+<section id="login">
+<form class="form-signin" id="login-form">
+  <img class="mb-4 d-block m-auto" src="./css/shopper.svg" width="150" height="72">
+  <h1 class="h3 mb-3 text-center font-weight-normal">Please sign in</h1>
+  <label for="username" class="sr-only">Username</label>
+  <input type="text" id="username" class="form-control" name="name" placeholder="username" required autofocus>
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  <p class="mt-5 mb-3 text-muted text-center">&copy; 2020</p>
+</form>
+</section>
+
+<main>
+
+
+  <nav class="py-2">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="navbar-brand">
+          <img src="./css/shopper.svg" alt="logo" height="30" /> <small id="admin" class="font-weight-bold text-muted"></small>
         </div>
-      </article>
-      <article class="accordion-item" data-actab-group="0" data-actab-id="1">
-        <h4 class="accordion-item__label">Add New</h4>
-        <div class="accordion-item__container">
-          <p>reprehenderit temporibus, assumenda cupiditate consequatur soluta odit ex repudiandae delectus cumque, provident hic sed quod? Quis, nam. Similique eaque quae vel recusandae expedita qui sint fugiat, nisi assumenda et ex molestiae atque deleniti magni, ipsam libero!</p>
+        <div id="cart-toggle">
+          <div id="cart-sum">0</div>
+          <img src="./css/list-check.svg" alt="toggle cart button" height="35" />
         </div>
-      </article>
+      </div>
+    </div>
+    <div class="cart-wrapper">
+      <div class="cart-overlay"></div>
+      <div class="cart" class="bg-white">
+        <p class="font-weight-light h3 text-center py-3">Cart</p>
+        <ul id="cart-items"></ul>
+        <div class="col mt-3"><button id="cart-submit" class="form-control btn">Submit</button></div>
+      </div>
+    </div>
+  </nav>
 
+  <section id="available-stock" style="width: 85%;max-width: 600px; margin: auto;">
+    <div class="container my-3">
+      <p class="h4">Stock available:</p>
+      <div id="stockbox"></div>
+      <small class="text-muted">(click on the name to add to cart)</small>
+  </section>
+ 
+
+  <section id="accordion-wrapper" class="d-flex justify-content-center mt-2">
+    <section class="accordion">
+      <section class="accordion-tabs">
+        <button class="accordion-tab accordion-active" data-actab-group="0" data-actab-id="0">Update</button>
+        <button class="accordion-tab" data-actab-group="0" data-actab-id="1">Add New</button>
+
+      </section>
+      <section class="accordion-content">
+        <article class="accordion-item accordion-active" data-actab-group="0" data-actab-id="0">
+          <h4 class="accordion-item__label text-success">Update (purchase)</h4>
+          <div class="accordion-item__container">
+            <form id="stockUpdateForm">
+              <div class="col mb-2">
+                <label for="stockUpdateName" class="form-label">Select item from list</label>
+                <select class="form-select" name="name" required id="stockUpdateName" required>
+                </select>
+              </div>
+
+              <div class="col">
+                <label for="stockUpdateQty" class="form-label">Enter quantity</label>
+                <input type="number" name="qty" id="stockUpdateQty" required class="form-control" placeholder="Enter Number">
+
+              </div>
+
+              <div class="col">
+                <button type="submit" class="form-control btn mt-4">Update</button>
+              </div>
+            </form>
+
+          </div>
+        </article>
+        <article class="accordion-item" data-actab-group="0" data-actab-id="1">
+          <h4 class="accordion-item__label text-success">Add New Stock</h4>
+          <div class="accordion-item__container">
+            <form id="addStockForm">
+              <div class="col mb-2">
+                <label for="addStockName" class="form-label">Enter name of item</label>
+                <input type="text" required id="addStockName" name="name" class="form-control" placeholder="Stock">
+              </div>
+
+              <div class="col">
+                <label for="addStockQuantity" class="form-label">Enter quantity</label>
+                <input type="number" name="qty" id="addStockQuantity" required class="form-control"
+                  placeholder="Enter Number">
+
+              </div>
+
+              <div class="col">
+                <button type="submit" class="form-control btn mt-4">Add</button>
+              </div>
+            </form>
+          </div>
+        </article>
+
+      </section>
     </section>
-  </section></section>
+  </section>
+  <div id="logout" class="mt-5 text-center h4 text-capitalize bg-white py-3 px-3">
+    signout
+    <img src="./css/x-square-fill.svg" alt="signout" height="25">
+  </div>
+ </main>
 
 
+  <!-- <script src="./js/bootstrap.bundle.min.js"></script> -->
+  <script src="./js/app.js"></script>
+</body>
 
-    <script src="./js/app.js"></script>
-  </body>
 </html>
