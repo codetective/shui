@@ -2,7 +2,7 @@ let loader = document.querySelector('.loader')
 const tsbx = document.querySelector('.toastbox')
 const spinner = document.querySelector('#spinner-wrapper')
 
-const url = 'http://localhost:3000'
+const url = 'https://shoprecord.herokuapp.com'
 const showToast = (msg, color) => {
   const toastbx = document.createElement('div')
   toastbx.classList.add('toastbx')
@@ -24,22 +24,21 @@ let loginSection = document.querySelector('#login')
 let main = document.querySelector('main')
 let status = localStorage.getItem('shopperutilscode')
 
-
 window.addEventListener('DOMContentLoaded', () => {
   main.hidden = true
   console.log(status)
   if (status != null) {
     main.hidden = false
-    loginSection.hidden = true;
+    loginSection.hidden = true
     indicator.innerText = `(${status})`
     app()
-  }else{
+  } else {
     main.hidden = true
     loader.style.display = 'none'
   }
 })
 
-loginForm.addEventListener('submit', (e) => {
+loginForm.addEventListener('submit', e => {
   e.preventDefault()
   const formdata = new FormData(loginForm)
   console.log(formdata)
@@ -52,7 +51,6 @@ loginForm.addEventListener('submit', (e) => {
   login(data)
 })
 
-
 const login = async data => {
   loader.style.display = ''
   try {
@@ -64,21 +62,20 @@ const login = async data => {
       body: data
     })
     const result = await response.json()
-    loader.style.display = 'none';
+    loader.style.display = 'none'
     if (result.error) {
       showToast(result.error, 'red')
-      return;
-    } else if(result.name === 'admin'){
+      return
+    } else if (result.name === 'admin') {
       showToast(result.msg, 'green')
       localStorage.setItem('shopperutilscode', result.name)
-      main.hidden = false;
-      loginSection.hidden = true;
-      loginSection.remove();
-      app();
+      main.hidden = false
+      loginSection.hidden = true
+      loginSection.remove()
+      app()
     } else {
       showToast('not allowed', 'red')
     }
-
   } catch (error) {
     loader.style.display = 'none'
     showToast(error + ', please retry', 'red')
@@ -86,10 +83,8 @@ const login = async data => {
   }
 }
 
-
-
 let app = () => {
-    async function FetchStock() {
+  async function FetchStock () {
     try {
       const fetchResult = fetch(
         new Request(url, { method: 'GET', cache: 'reload' })
@@ -221,7 +216,6 @@ let app = () => {
     })
   }
 
-
   const cart = document.querySelector('.cart')
   const cartItems = document.querySelector('#cart-items')
   const cartToggle = document.getElementById('cart-toggle')
@@ -270,7 +264,6 @@ let app = () => {
   tabs.forEach(function (tab) {
     tab.addEventListener('click', toggleShow)
   })
-
 
   const stockbox = document.querySelector('#stockbox')
 
@@ -326,7 +319,6 @@ let app = () => {
     AddNewStock(data)
   })
   stockUpdateForm.addEventListener('submit', e => {
-
     e.preventDefault()
     const formdata = new FormData(stockUpdateForm)
     const name = formdata.get('name')
