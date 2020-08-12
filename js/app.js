@@ -2,8 +2,8 @@ let loader = document.querySelector('.loader')
 const tsbx = document.querySelector('.toastbox')
 const spinner = document.querySelector('#spinner-wrapper')
 
-// const url = 'https://shoprecord.herokuapp.com'
-const url = 'http://localhost:3000'
+const url = 'https://shoprecord.herokuapp.com'
+// const url = 'http://localhost:3000'
 const showToast = (msg, color) => {
   const toastbx = document.createElement('div')
   toastbx.classList.add('toastbx')
