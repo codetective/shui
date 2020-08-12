@@ -2,8 +2,8 @@ let loader = document.querySelector('.loader')
 const tsbx = document.querySelector('.toastbox')
 const spinner = document.querySelector('#spinner-wrapper')
 
-const url = 'https://shoprecord.herokuapp.com'
-// const url = 'http://localhost:3000'
+// const url = 'https://shoprecord.herokuapp.com'
+const url = 'http://localhost:3000'
 const showToast = (msg, color) => {
   const toastbx = document.createElement('div')
   toastbx.classList.add('toastbx')
@@ -368,7 +368,9 @@ regSaleBtn.addEventListener('click', () => {
       cartItems.appendChild(li)
       mapCartSum()
     } else if (e.target.tagName === 'BUTTON') {
-      DeleteStock(JSON.stringify({ name: e.target.dataset.stockname }))
+      let user = localStorage.getItem('shopperutilscode')
+
+      DeleteStock(JSON.stringify({ name: e.target.dataset.stockname, user: user }))
     }
   })
 
@@ -380,10 +382,13 @@ regSaleBtn.addEventListener('click', () => {
     const formdata = new FormData(addStockForm)
     const name = formdata.get('name')
     const qty = formdata.get('qty')
+    let user = localStorage.getItem('shopperutilscode')
+
 
     let data = JSON.stringify({
       name: name,
-      qty: qty
+      qty: qty,
+      user: user
     })
     AddNewStock(data)
   })
@@ -392,10 +397,12 @@ regSaleBtn.addEventListener('click', () => {
     const formdata = new FormData(stockUpdateForm)
     const name = formdata.get('name')
     const qty = formdata.get('qty')
+    let user = localStorage.getItem('shopperutilscode')
 
     let data = JSON.stringify({
       name: name,
-      qty: qty
+      qty: qty,
+      user: user
     })
 
     UpdateStock(data)
