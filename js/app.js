@@ -26,7 +26,6 @@ let status = localStorage.getItem('shopperutilscode')
 
 window.addEventListener('DOMContentLoaded', () => {
   main.hidden = true
-  console.log(status)
   if (status != null) {
     main.hidden = false
     loginSection.hidden = true
@@ -41,7 +40,6 @@ window.addEventListener('DOMContentLoaded', () => {
 loginForm.addEventListener('submit', e => {
   e.preventDefault()
   const formdata = new FormData(loginForm)
-  console.log(formdata)
   const name = formdata.get('name')
   const pass = formdata.get('password')
   let data = JSON.stringify({
@@ -80,7 +78,6 @@ const login = async data => {
   } catch (error) {
     loader.style.display = 'none'
     showToast(error + ', please retry', 'red')
-    console.log(error)
   }
 }
 
@@ -309,7 +306,6 @@ let app = () => {
   addStockForm.addEventListener('submit', e => {
     e.preventDefault()
     const formdata = new FormData(addStockForm)
-    console.log(formdata)
     const name = formdata.get('name')
     const qty = formdata.get('qty')
 
@@ -324,7 +320,6 @@ let app = () => {
     const formdata = new FormData(stockUpdateForm)
     const name = formdata.get('name')
     const qty = formdata.get('qty')
-    console.log(qty)
 
     let data = JSON.stringify({
       name: name,
