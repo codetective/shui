@@ -69,6 +69,7 @@ const login = async data => {
     } else if (result.name === 'admin') {
       showToast(result.msg, 'green')
       localStorage.setItem('shopperutilscode', result.name)
+      indicator.innerText = `(${status})`
       main.hidden = false
       loginSection.hidden = true
       loginSection.remove()
