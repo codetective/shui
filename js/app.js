@@ -364,4 +364,10 @@ let app = () => {
 
     RegisterSale(JSON.stringify(sales))
   })
+
+  let logout = document.querySelector('#logout')
+  logout.onclick = () => {
+    localStorage.removeItem('shopperutilscode')
+    location.reload();
+  }
 }
