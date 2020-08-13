@@ -23,14 +23,14 @@ let loginForm = document.querySelector('#login-form')
 let indicator = document.querySelector('#admin')
 let loginSection = document.querySelector('#login')
 let main = document.querySelector('main')
-let status = localStorage.getItem('shopperutilscode')
+let status = JSON.parse(localStorage.getItem('shopperutilscode')) || null;
 
 window.addEventListener('DOMContentLoaded', () => {
   main.hidden = true
-  if (status != null) {
+  if (status != null ) {
     main.hidden = false
     loginSection.hidden = true
-    indicator.innerText = `(${status})`
+    indicator.innerText = `(${status.name})`
     app()
   } else {
     main.hidden = true
@@ -66,14 +66,16 @@ const login = async data => {
       showToast(result.error, 'red')
       return
     } else {
-      showToast(result.msg, 'green')
-      await localStorage.setItem('shopperutilscode', result.name)
-
+      localStorage.setItem('shopperutilscode', JSON.stringify({
+        name: result.profile.name,
+        role: result.profile.role,
+        token: result.token
+      }))
       main.hidden = false
       loginSection.hidden = true
       loginSection.remove()
       app()
-      indicator.innerText = `(${localStorage.getItem('shopperutilscode')})`
+      indicator.innerText = `(${result.profile.name})`
       status = localStorage.getItem('shopperutilscode')
 
     }
@@ -84,7 +86,9 @@ const login = async data => {
 }
 
 let app = () => {
-  if (localStorage.getItem('shopperutilscode') !== 'admin') {
+  let detail = JSON.parse(localStorage.getItem('shopperutilscode'));
+
+  if (detail.role !== 'admin') {
     let t = document.querySelector('#accordion-wrapper')
     t.remove()
   }
@@ -114,7 +118,7 @@ let app = () => {
   FetchStock()
 
   const DeleteStock = async stockname => {
-    if (status !== 'admin') {
+    if (detail.role !== 'admin') {
       return;
     } else {
       spinner.style.display = 'flex'
@@ -127,12 +131,19 @@ let app = () => {
         const response = await fetch(url, {
           method: 'DELETE',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + detail.token
           },
           body: stockname
         })
         const result = await response.json()
-        FetchStock()
+        if (result.error) {
+          showToast(result.error, 'red')
+          spinner.style.display = 'none'
+        } else {
+          FetchStock()
+        }
+
       } catch (error) {
         showToast(error)
         spinner.style.display = 'none'
@@ -142,7 +153,7 @@ let app = () => {
 
 
   const AddNewStock = async data => {
-    if (status !== 'admin') {
+    if (detail.role !== 'admin') {
       return;
     } else {
       spinner.style.display = 'flex'
@@ -151,7 +162,9 @@ let app = () => {
         const response = await fetch(url, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + detail.token
+
           },
           body: data
         })
@@ -170,30 +183,37 @@ let app = () => {
     }
   }
   const UpdateStock = async data => {
-    if (status !== 'admin') {
+    if (detail.role !== 'admin') {
       return;
     } else {
-      if (status !== 'admin') {
-        return;
-      } else {
-        spinner.style.display = 'flex'
+     
+      spinner.style.display = 'flex'
 
-        try {
-          const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: data
-          })
-          stockUpdateForm.reset()
-          const result = await response.json()
-          FetchStock()
-        } catch (error) {
+      try {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + detail.token
+
+          },
+          body: data
+        })
+        stockUpdateForm.reset()
+        const result = await response.json()
+
+        if (result.error) {
+          showToast(result.error, 'red')
           spinner.style.display = 'none'
 
-          showToast(error, 'red')
+        } else {
+          FetchStock()
         }
+      } catch (error) {
+        spinner.style.display = 'none'
+
+        showToast(error, 'red')
+        
       }
     }
   }
@@ -299,54 +319,53 @@ let app = () => {
   let addStockForm = document.querySelector('#addStockForm')
   let stockUpdateForm = document.querySelector('#stockUpdateForm')
   let stockUpdateName = document.querySelector('#stockUpdateName')
-//do cart events
 
-cartItems.addEventListener('click', e => {
-  if (e.target.classList.contains('cart-item')) {
-    e.target.parentNode.removeChild(e.target)
-    let curr = cartArray.indexOf(e.target.textContent)
-    cartArray.splice(curr, 1)
-    mapCartSum()
-  }
-})
+  cartItems.addEventListener('click', e => {
+    if (e.target.classList.contains('cart-item')) {
+      e.target.parentNode.removeChild(e.target)
+      let curr = cartArray.indexOf(e.target.textContent)
+      cartArray.splice(curr, 1)
+      mapCartSum()
+    }
+  })
 
-regSaleBtn.addEventListener('click', () => { 
-  regSaleBtn.classList.add('disabled')
-  const sales = []
-  for (let i = 0; i < cartItemsList.length; i++) {
-    const element = cartItemsList[i]
-    let item = {
-      name: element.dataset.cartname,
-      qty: parseInt(element.children[1].value)
+  regSaleBtn.addEventListener('click', () => {
+    regSaleBtn.classList.add('disabled')
+    const sales = []
+    for (let i = 0; i < cartItemsList.length; i++) {
+      const element = cartItemsList[i]
+      let item = {
+        name: element.dataset.cartname,
+        qty: parseInt(element.children[1].value)
+      }
+
+      if (item.qty < 1) {
+        alert('Values cannot be 0')
+        setTimeout(() => {
+          regSaleBtn.classList.remove('disabled')
+        }, 1500)
+        return
+      } else {
+        spinner.style.display = 'block'
+
+        sales.push(item)
+      }
     }
 
-    if (item.qty < 1) {
-      alert('Values cannot be 0')
-      setTimeout(() => {
-        regSaleBtn.classList.remove('disabled')
-      }, 1500)
-      return
-    } else {
-      spinner.style.display = 'block'
-
-      sales.push(item)
-    }
-  }
-
-  RegisterSale(JSON.stringify(sales))
-})
+    RegisterSale(JSON.stringify(sales))
+  })
 
   const mapOptions = stocks => {
-    if (status !== 'admin') {
+    if (detail.role !== 'admin') {
       return;
     } else {
-    stockUpdateName.innerHTML = ''
-    stocks.forEach(stock => {
-      let opt = document.createElement('option')
-      opt.innerText = stock.name
-      stockUpdateName.appendChild(opt)
-    })
-  }
+      stockUpdateName.innerHTML = ''
+      stocks.forEach(stock => {
+        let opt = document.createElement('option')
+        opt.innerText = stock.name
+        stockUpdateName.appendChild(opt)
+      })
+    }
   }
   const mapCartSum = () => {
     cartSum.innerText = cartItemsList.length
@@ -368,27 +387,24 @@ regSaleBtn.addEventListener('click', () => {
       cartItems.appendChild(li)
       mapCartSum()
     } else if (e.target.tagName === 'BUTTON') {
-      let user = localStorage.getItem('shopperutilscode')
+      
 
-      DeleteStock(JSON.stringify({ name: e.target.dataset.stockname, user: user }))
+      DeleteStock(JSON.stringify({ name: e.target.dataset.stockname }))
     }
   })
 
-    if (status !== 'admin') {
+ if(detail.role !== 'admin') {
     return;
-  } else {
+}else{
   addStockForm.addEventListener('submit', e => {
     e.preventDefault()
     const formdata = new FormData(addStockForm)
     const name = formdata.get('name')
     const qty = formdata.get('qty')
-    let user = localStorage.getItem('shopperutilscode')
-
 
     let data = JSON.stringify({
       name: name,
-      qty: qty,
-      user: user
+      qty: qty
     })
     AddNewStock(data)
   })
@@ -397,12 +413,11 @@ regSaleBtn.addEventListener('click', () => {
     const formdata = new FormData(stockUpdateForm)
     const name = formdata.get('name')
     const qty = formdata.get('qty')
-    let user = localStorage.getItem('shopperutilscode')
+    
 
     let data = JSON.stringify({
       name: name,
-      qty: qty,
-      user: user
+      qty: qty
     })
 
     UpdateStock(data)
